@@ -49,7 +49,8 @@ async def handle_connection(websocket):
                         plate_crop = image[y1:y2, x1:x2]
                         # Run OCR on crop
                         # detail=0 returns just the list of text strings
-                        ocr_result = await loop.run_in_executor(None, reader.readtext, plate_crop, 0) # detail=0 -> simply returns all texts
+                        # Wrap in lambda to pass keyword argument 'detail' correctly
+                        ocr_result = await loop.run_in_executor(None, lambda: reader.readtext(plate_crop, detail=0))
                         if ocr_result:
                              # Join standard output (it might be a list of strings)
                              # easyocr with detail=0 returns a list of strings

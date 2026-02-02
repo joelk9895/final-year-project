@@ -65,11 +65,38 @@ async def handle_connection(websocket):
                 # Send back JSON
                 await websocket.send(json.dumps(results))
                 
+                # Debugging: Log text to console and save image
+                print(f"Detected: {[r['text'] for r in results]}")
+                
+                # Run debug drawing in thread pool to minimize impact
+                await loop.run_in_executor(None, save_debug_image, image, results)
+                
             except Exception as e:
                 print(f"Error processing frame: {e}")
                 
     except websockets.exceptions.ConnectionClosed:
         print("Client disconnected")
+
+def save_debug_image(image, results):
+    try:
+        debug_image = image.copy()
+        for res in results:
+            box = res["box"]
+            text = res["text"]
+            score = res["score"]
+            
+            x1, y1, x2, y2 = np.array(box).astype(int)
+            
+            # Draw box
+            cv2.rectangle(debug_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            
+            # Draw text
+            label = f"{text} ({score:.2f})" if text else f"{score:.2f}"
+            cv2.putText(debug_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            
+        cv2.imwrite("latest_server_inference.jpg", debug_image)
+    except Exception as e:
+        print(f"Error saving debug image: {e}")
 
 def decode_image(message):
     np_arr = np.frombuffer(message, np.uint8)

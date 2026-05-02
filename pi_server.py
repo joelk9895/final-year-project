@@ -9,6 +9,7 @@ import argparse
 import sqlite3
 import os
 import socket
+from aiohttp import web
 from test_model import YOLOInference
 
 model = None
@@ -18,6 +19,10 @@ import easyocr
 reader = None
 
 import re
+
+# ─── Connected clients & latest frame ─────────────────
+connected_clients = set()
+_latest_frame_jpg = None  # JPEG bytes of latest processed frame
 
 
 DB_PATH = "vehicles.db"
@@ -138,8 +143,9 @@ def validate_plate(text):
 # ─── WebSocket Handler ───────────────────────────────
 
 async def handle_connection(websocket):
-    global _last_ocr_plate, _last_ocr_time
-    print("Client connected")
+    global _last_ocr_plate, _last_ocr_time, _latest_frame_jpg
+    connected_clients.add(websocket)
+    print(f"Client connected ({len(connected_clients)} total)")
     try:
         async for message in websocket:
             try:
@@ -254,10 +260,12 @@ async def handle_connection(websocket):
                 # If we found a verified or unregistered plate, send that signal
                 if verified_data:
                     print(f"PLATE RESULT: {verified_data}")
-                    await websocket.send(json.dumps(verified_data))
+                    msg = json.dumps(verified_data)
+                    await broadcast(msg)
                 else:
                     # Send back standard JSON detections
-                    await websocket.send(json.dumps(results))
+                    msg = json.dumps(results)
+                    await broadcast(msg)
                 
                 # Debugging: Log text to console
                 print(f"Detected: {[r['text'] for r in results]}")
@@ -272,6 +280,18 @@ async def handle_connection(websocket):
                 
     except websockets.exceptions.ConnectionClosed:
         print("Client disconnected")
+    finally:
+        connected_clients.discard(websocket)
+        print(f"Client removed ({len(connected_clients)} remaining)")
+
+
+async def broadcast(message):
+    """Send a message to all connected WebSocket clients."""
+    if connected_clients:
+        await asyncio.gather(
+            *[client.send(message) for client in connected_clients],
+            return_exceptions=True
+        )
 
 
 async def handle_text_message(websocket, message):
@@ -357,6 +377,7 @@ async def handle_text_message(websocket, message):
 # ─── Utilities ───────────────────────────────────────
 
 def save_debug_image(image, results):
+    global _latest_frame_jpg
     try:
         debug_image = image.copy()
         for res in results:
@@ -373,6 +394,10 @@ def save_debug_image(image, results):
             label = f"{text} ({score:.2f})" if text else f"{score:.2f}"
             cv2.putText(debug_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
+        # Store latest frame for HTTP feed
+        _, jpg = cv2.imencode('.jpg', debug_image, [cv2.IMWRITE_JPEG_QUALITY, 75])
+        _latest_frame_jpg = jpg.tobytes()
+        
         cv2.imwrite("latest_server_inference.jpg", debug_image)
     except Exception as e:
         print(f"Error saving debug image: {e}")
@@ -407,6 +432,21 @@ def get_network_ips():
 
     return ips
 
+# ─── HTTP Feed Server ─────────────────────────────────
+
+async def handle_feed(request):
+    """Serve the latest processed frame as JPEG."""
+    if _latest_frame_jpg:
+        return web.Response(body=_latest_frame_jpg, content_type='image/jpeg')
+    return web.Response(status=204)
+
+async def handle_feed_status(request):
+    """Simple status endpoint."""
+    return web.Response(
+        text=json.dumps({"status": "ok", "clients": len(connected_clients)}),
+        content_type='application/json'
+    )
+
 # ─── Main ────────────────────────────────────────────
 
 async def main(model_path, port):
@@ -424,7 +464,9 @@ async def main(model_path, port):
     reader = easyocr.Reader(['en'], gpu=False) # Set gpu=True if running on proper GPU machine
     print("OCR reader loaded.")
     
-    print(f"Starting server on port {port}...")
+    http_port = port + 1  # HTTP feed on next port (e.g. 8766)
+    
+    print(f"Starting server on port {port} (WS) and {http_port} (HTTP feed)...")
     network_ips = get_network_ips()
     if network_ips:
         print("\n=== Pi Server Connection Info ===")
@@ -432,9 +474,19 @@ async def main(model_path, port):
         for ip in network_ips:
             print(f"- Network IP: {ip}")
             print(f"  WebSocket URL: ws://{ip}:{port}")
+            print(f"  Feed URL: http://{ip}:{http_port}/feed")
         print("===============================\n")
     else:
         print("Could not detect LAN IP automatically. Use ifconfig/ipconfig to find your network IP.")
+
+    # Start HTTP server for feed
+    app = web.Application()
+    app.router.add_get('/feed', handle_feed)
+    app.router.add_get('/status', handle_feed_status)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", http_port)
+    await site.start()
 
     async with websockets.serve(handle_connection, "0.0.0.0", port):
         await asyncio.Future()  # run forever

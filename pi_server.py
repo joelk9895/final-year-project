@@ -459,7 +459,7 @@ async def handle_api_users(request):
 import urllib.request
 import urllib.error
 
-def report_ip_to_vercel(endpoint_url="https://your-vercel-project.vercel.app/api/report-ip"):
+def report_ip_to_vercel(endpoint_url="https://final-year-project-three-sepia.vercel.app/api/report-ip"):
     """Fetch the local IP and send it to a Vercel endpoint."""
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

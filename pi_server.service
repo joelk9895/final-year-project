@@ -1,0 +1,19 @@
+[Unit]
+Description=Ethereal Charge Pi Server
+After=network.target
+
+[Service]
+Type=simple
+# Change 'pi' to your actual Raspberry Pi username if different (e.g. joelkgeorge)
+User=pi
+# Update these paths to match exactly where your project is stored on the Pi
+WorkingDirectory=/home/pi/final-year-project
+ExecStart=/usr/bin/python3 /home/pi/final-year-project/pi_server.py
+Restart=always
+RestartSec=5
+
+# Set environment variables if needed
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

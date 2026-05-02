@@ -1,0 +1,173 @@
+\documentclass[11pt]{report}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{graphics}
+\usepackage{verbatim} 
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+%\usepackage{fullpage}
+\usepackage{titlesec}
+\usepackage{xstring} % For string manipulation
+\usepackage{float}
+\usepackage{tabularx,ragged2e,booktabs,caption}
+\usepackage{xspace}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{tocloft}
+\usepackage{longtable} 
+\usepackage{enumitem}
+\usepackage{algpseudocode}
+\usepackage{setspace}  
+\usepackage{tikz}
+%\usepackage{algorithmic}
+\usepackage[colorlinks=true,linkcolor=black]{hyperref} 
+%- need to figure out how to remove the colour
+\usepackage{pdfpages}
+\usetikzlibrary{shapes.geometric, arrows}
+
+\tikzstyle{process} = [ellipse, draw, text centered, minimum height=1cm, minimum width=2.5cm]
+\tikzstyle{entity} = [rectangle, draw, text centered, minimum height=1cm, minimum width=2.5cm]
+\tikzstyle{arrow} = [thick, ->, >=stealth]
+%\usepackage[hidelinks]{hyperref}
+
+\newcommand{\truncate}[2]{%
+  \IfSubstr{#1}{\detokenize{}}{#1}{%
+    \StrLeft{#1}{#2}...
+  }%
+}
+
+\begin{document}
+	\renewcommand\bibname{References}
+	\pagestyle{fancy}
+	\fancyhead{}
+	\fancyfoot{}
+	\fancyfoot[c]{\thepage}
+	\fancyfoot[l]{CSD 416 - Project Phase 2 2024-25}
+	\lhead{title}
+	\renewcommand{\chaptermark}[1]{
+		\markboth{\thechapter.\ #1}{}}
+	\renewcommand{\headrulewidth}{0.1pt}
+	\fancyhead[r]{\slshape \leftmark}
+	\addtolength{\headheight}{\baselineskip}
+
+	\lhead{\nouppercase{\rightmark}}
+	\rhead{\nouppercase{\leftmark}}
+	\lhead{title}
+        %\fancyhead[LO,RE]{\slshape \truncate{\leftmark}{30}
+	\fancyhead[LO,RE]{\slshape \leftmark}
+
+	\bibliographystyle{plain}
+	\title {A Hybrid Model for Stampede Detection and Analysis Using YOLOv5, Mask R-CNN, and Time-Series Analysis}
+
+	\begin{titlepage}
+		\begin{center}
+			\topmargin100pt
+                \vspace{0.2in}
+			\Huge{\textbf{A Hybrid Model for Stampede Detection and Analysis Using YOLOv5, Mask R-CNN, and Time-Series Transformer}}\\
+			\large{\textbf{CSD 416 - PROJECT PHASE II\\}}
+			\vspace{0.5in}
+			\Large{\textbf{CSU21B04 MDL21CS008
+			}}	\hspace{.1in}	\Large{\textbf{Adithya V}}\\
+			\Large{\textbf{CSU21B08 MDL21CS012
+			}}	\hspace{.1in}	\Large{\textbf{Alaka A J}}\\
+			\Large{\textbf{CSU21B35 MDL21CS071
+			}}	\hspace{.1in}	\Large{\textbf{Kevin Joseph Hendry}}\\
+             \Large{\textbf{CSU21B41 MDL21CS084
+			}}	\hspace{.1in}	\Large{\textbf{Mrinalini Nair Ani}}
+		      \vspace{1cm}
+    
+			\Large{\textbf{
+					B. Tech. Computer Science \& Engineering
+			}}
+
+			\vspace{.4in}
+			\begin{figure}[h]
+				\begin{center}
+					%\epsfig{width=1in, file=embN1.jpg}
+					\epsfig{width=1.4in, file=logo.jpg}
+					% If you have access to better quality logo image, that may be used, but all the groups should use the same image
+				\end{center}
+			\end{figure}
+			%\vspace{.2in}
+			\textbf{
+				Department of Computer Engineering\\
+				Model Engineering College, Ernakulam\\
+				Thrikkakara, Kochi 682021\\
+				Phone: +91.484.2575370\\
+				http://www.mec.ac.in \\
+				hodcs@mec.ac.in
+			}
+           \vspace{1.5cm}
+
+        \textbf{April 2025}
+        
+		\end{center}
+	\end{titlepage}
+\begin{titlepage}
+		\begin{center}
+			\Large{\textbf{Model Engineering College, Ernakulam}}\\
+			\Large{\textbf{Dept. of Computer Engineering}}\\
+		\end{center}
+		\begin{figure}[h]
+			\begin{center}
+				\epsfig{width=1.2in, file=logo.jpg}
+			\end{center}
+		\end{figure}
+		\begin{center}
+	\Large{\textbf{C E R T I F I C A T E}}\\
+	\vspace{.1in}
+\end{center}
+This is to certify that, this report titled \textbf{\textit {A Hybrid Model for Stampede Detection and Analysis Using YOLOv5, Mask R-CNN, and Time-Series Transformer}} is a bonafide record of the work done by\\
+\vspace{0.3cm}
+\\
+\centerline{{\textbf{CSU21B41
+		MDL21CS084
+}}	\hspace{.1in}	{\textbf{MRINALINI NAIR ANI}}} \\
+
+\vspace{0.3cm}
+
+\centerline{{{\textsf{Eighth Semester} B. Tech. Computer Science \& Engineering }}}
+student,  for the course work in \textbf{CSD 416 - Project Phase II} which is the second part of the 2 semester Project Work, under our guidance and supervision, in partial fulfillment of the requirements for the award of the degree, B. Tech. Computer Science  and Engineering of \textbf{APJ Abdul Kalam Technical University}.
+\vspace{.1in}
+
+\begin{tabbing}
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\= xxxxxxxxxxxxxxxxxx\= \kill
+
+			Guide			\>				Coordinator
+			\\
+			\\
+			\\
+			Mrs. Rekha R \> Dr. Priya S\\
+			Assistant Professor	\> Professor\\
+			Computer Engineering	\>	Computer Engineering
+		\end{tabbing}
+		\vspace{.08in}
+		%
+		\begin{tabbing}
+			xxxxxxxxxxxxxxxxxxxxxxxxxxxx\= xxxxxxxxxxxxxxxxxx\= \kill
+			\>Head of the Department \\
+			\\
+			\\
+			\>Dr. Binu V. P\\
+			\>Associate Professor\\
+			\>Computer Engineering\\
+                \\
+                \\
+                \>April 3, 2025
+		\end{tabbing}
+	\end{titlepage}
+		
+\end{document}
+
+\centerline{{\textbf{CSU21B04
+		MDL21CS008
+}}	\hspace{.1in}	
+{\textbf{ADITHYA V}}}\\
+\centerline{{\textbf{CSU21B08
+		MDL21CS012
+}} \hspace{.1in}	{\textbf{ALAKA A J}}} \\
+
+\centerline{{\textbf{CSU21B35
+			MDL21CS071
+	}}	\hspace{.1in}	{\textbf{KEVIN JOSEPH HENDRY}}} \\

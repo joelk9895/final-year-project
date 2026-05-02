@@ -1,0 +1,99 @@
+% ============================================================
+% PROJECT TIMELINE SLIDE
+% Edge-Driven Semi-Autonomous EV Charging Station
+% ============================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% --- Theme ---
+\usetheme{Madrid}
+\usecolortheme{whale}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+% --- Packages ---
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows.meta, positioning, calc, backgrounds}
+
+\begin{document}
+
+\begin{frame}{Project Timeline (Dec 2024 -- Mar 2025)}
+\centering
+\begin{tikzpicture}[
+    x=1.6cm, y=-1.5cm,
+    timeline/.style={thick, blue!80!black, ->, >=Stealth},
+    milestone/.style={circle, draw=blue!80!black, fill=white, thick, inner sep=2.5pt},
+    label/.style={font=\bfseries\small, text=blue!80!black},
+    task/.style={rectangle, draw=gray!50, fill=blue!5, rounded corners, font=\scriptsize, text width=3cm, align=left, inner sep=4pt},
+    connection/.style={draw=gray!50, densely dotted, thick}
+]
+
+    % Draw the main timeline axis
+    \draw[timeline] (0,0) -- (6.5,0);
+    
+    % --- MILESTONES ---
+    % Late December
+    \node[milestone] (m1) at (0.5, 0) {};
+    \node[label, above=0.3cm of m1] {Late Dec};
+    
+    % Mid January
+    \node[milestone] (m2) at (2.0, 0) {};
+    \node[label, above=0.3cm of m2] {Jan};
+    
+    % Early February
+    \node[milestone] (m3) at (3.5, 0) {};
+    \node[label, above=0.3cm of m3] {Early Feb};
+    
+    % Late February
+    \node[milestone] (m4) at (5.0, 0) {};
+    \node[label, above=0.3cm of m4] {Late Feb};
+    
+    % Early March
+    \node[milestone] (m5) at (6.0, 0) {};
+    \node[label, above=0.3cm of m5] {Early Mar};
+    
+    % --- TASKS ---
+    
+    % Phase 1: Inception (Below axis)
+    \node[task, below=0.8cm of m1] (t1) {
+        $\bullet$ Topic Finalization\\[2pt]
+        $\bullet$ Literature Survey\\[2pt]
+        $\bullet$ Hardware Procurement
+    };
+    \draw[connection] (m1) -- (t1.north);
+    
+    % Phase 2: Core ML \& Design (Above axis/staggered)
+    \node[task, below=2cm of m2] (t2) {
+        $\bullet$ Architecture Design\\[2pt]
+        $\bullet$ YOLOv11 Training\\[2pt]
+        $\bullet$ UI/UX Prototyping
+    };
+    \draw[connection] (m2) -- (t2.north);
+    
+    % Phase 3: Quantization & App (Below axis)
+    \node[task, below=0.8cm of m3] (t3) {
+        $\bullet$ INT8 Quantization\\[2pt]
+        $\bullet$ ONNX ARM Patching\\[2pt]
+        $\bullet$ iOS App Development
+    };
+    \draw[connection] (m3) -- (t3.north);
+    
+    % Phase 4: Server & DB (Above axis/staggered)
+    \node[task, below=2cm of m4] (t4) {
+        $\bullet$ SQLite Integration\\[2pt]
+        $\bullet$ Edge Server Pipeline\\[2pt]
+        $\bullet$ WebSocket Sync
+    };
+    \draw[connection] (m4) -- (t4.north);
+    
+    % Phase 5: Testing & Integration (Below axis)
+    \node[task, below=0.8cm of m5] (t5) {
+        $\bullet$ End-to-End Testing\\[2pt]
+        $\bullet$ Evaluation Metrics\\[2pt]
+        $\bullet$ Final Report
+    };
+    \draw[connection] (m5) -- (t5.north);
+    
+\end{tikzpicture}
+\end{frame}
+
+\end{document}

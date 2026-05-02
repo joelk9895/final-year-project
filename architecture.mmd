@@ -1,0 +1,33 @@
+graph TD
+    subgraph iOS["📱 iOS Client App"]
+        CAM["Camera Module<br/>(AVFoundation)"]
+        WS_C["WebSocket Client"]
+        UI["SwiftUI Overlay<br/>(Boxes + OCR Text)"]
+    end
+
+    subgraph Edge["🖥️ Raspberry Pi 4B Edge Node"]
+        WS_S["WebSocket Server<br/>(asyncio)"]
+        DECODE["JPEG Decoder"]
+        YOLO["YOLOv11 INT8<br/>(ONNX Runtime)"]
+        OCR["EasyOCR"]
+        REGEX["Regex Validator"]
+        DB["Local DB Lookup"]
+    end
+
+    subgraph Station["⚡ Charging Station"]
+        RELAY["GPIO Relay"]
+        CHARGER["EV Charger"]
+    end
+
+    CAM -->|"JPEG Frames"| WS_C
+    WS_C -->|"WebSocket"| WS_S
+    WS_S --> DECODE
+    DECODE --> YOLO
+    YOLO -->|"Plate Crops"| OCR
+    OCR -->|"Text"| REGEX
+    REGEX -->|"Valid Plate"| DB
+    DB -->|"JSON Response"| WS_S
+    WS_S -->|"Detections"| WS_C
+    WS_C --> UI
+    DB -->|"Authorized"| RELAY
+    RELAY --> CHARGER

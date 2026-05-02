@@ -1,0 +1,27 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Proposed Solution Pipeline Flow}}{5}{figure.caption.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Product Context Diagram}}{22}{figure.caption.4}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces System Architecture Diagram}}{29}{figure.caption.10}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Use Case Diagram}}{30}{figure.caption.11}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Level 0 Data Flow Diagram}}{31}{figure.caption.12}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Level 1 Data Flow Diagram}}{31}{figure.caption.13}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Entity-Relationship Diagram for Vehicle Database}}{32}{figure.caption.14}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces FP32 vs INT8 Model Size}}{37}{figure.caption.16}%
+\contentsline {figure}{\numberline {7.2}{\ignorespaces FP32 vs INT8 Inference Latency}}{38}{figure.caption.17}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {8.1}{\ignorespaces FP32 vs INT8 Throughput (FPS)}}{44}{figure.caption.22}%
+\contentsline {figure}{\numberline {8.2}{\ignorespaces Detection Accuracy Comparison}}{45}{figure.caption.23}%
+\contentsline {figure}{\numberline {8.3}{\ignorespaces Pipeline Latency Breakdown (FP32 vs INT8)}}{45}{figure.caption.24}%
+\contentsline {figure}{\numberline {8.4}{\ignorespaces Peak RAM Usage: FP32 vs INT8}}{46}{figure.caption.25}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {9.1}{\ignorespaces Quantization Impact Summary}}{47}{figure.caption.26}%
+\contentsline {figure}{\numberline {9.2}{\ignorespaces INT8 Inference Time per Frame (100 Frames)}}{48}{figure.caption.27}%
+\contentsline {figure}{\numberline {9.3}{\ignorespaces Pipeline Latency Distribution}}{49}{figure.caption.29}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }

@@ -12,8 +12,8 @@ async def send_image(uri, image_path):
             print(f"Could not read image: {image_path}")
             return
             
-        # Encode as JPEG
-        _, buffer = cv2.imencode('.jpg', img)
+        # Encode as JPEG with reduced quality to minimise transfer time
+        _, buffer = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, 65])
         byte_data = buffer.tobytes()
         
         print(f"Sending image ({len(byte_data)} bytes)...")

@@ -1,0 +1,399 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{verbatim} 
+\usepackage{adjustbox}
+\usepackage[table,xcdraw]{xcolor} 
+\usepackage{enumitem}
+\usepackage{longtable}
+
+\geometry{left=0.5in, right=0.5in, top=0.75in, bottom=0.75in}
+
+%change this to make changes to table format
+\setlist[itemize,1]{label=$\circ$, leftmargin=*}
+
+\begin{document}
+\section{Literature Study Table}
+% %For further references see \href{http://www.overleaf.com}{Something  Linky} or go to the next url: \url{http://www.overleaf.com} or open  the next file \href{run:./file.txt}{File.txt}
+
+% %It's also possible to link directly any word or  \hyperlink{thesentence}{any sentence} in your document.
+
+\small
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|}
+    \hline
+    \rowcolor[HTML]{D3D3D3}
+    \textbf{Title of Paper} & \textbf{Methods Used} & \textbf{Features} & \textbf{Advantages} & \textbf{Disadvantages}  & \textbf{Future Scope} \\
+    \hline
+    \vspace{0.1in}
+    
+    \textbf{A Novel Approach for Crowd Analysis and Density Estimation by using ML Techniques} & 
+    \begin{itemize}[leftmargin=*]
+        \item MobileNet SSD, 
+        \item YOLO v4
+        \item Mask-RCNN
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Lightweight and versatile
+        \item Adaptable to real-time processing
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item MobileNet SSD: Lightweight, versatile, devices with limited computational power.  
+        \item YOLO v4: High precision, real-time processing
+        \item Mask-RCNN: Excellent instance segmentation, contextual
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+    \item MobileNet SSD: Reduced accuracy in high-density crowds.  
+    \item YOLO v4: High computational demand.  
+    \item Mask-RCNN: Slow processing, computationally heavy
+    \end{itemize} & 
+   \begin{comment} \begin{itemize}[leftmargin=*]
+        \item  Accuracy, precision, recall and F1 score chosen for quantifying detection performance. 
+      \textit{\textbf{  \item Average Accuracy :}}
+            \item MobileNet SSD: 64.75\%
+            \item YoloV4: 84\%
+            \item Mask-RCNN: 78.5\%
+    \end{itemize} & \end{comment} 
+    \begin{itemize}[leftmargin=*]
+        \item Real-time optimization for dense crowds
+    \end{itemize} \\
+    \hline
+    \vspace{0.1in}
+   \textbf{ A Proposal on Stampede Detection in Real Environments} & 
+    \begin{itemize}[leftmargin=*]
+        \item Optical flow computation
+        \item feature extraction, in real time.
+        \item Stacking classifiers to detect stampedes
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item No thresholds needed
+        \item Public dataset use
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Real-time detection
+        \item Public dataset robustness
+        \item Doesn't require predefined thresholds.  
+        \item Stacking classifier enhances performance.  
+        \item Public datasets ensure robustness.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Limited performance in high-density crowds
+            \item Limited performance in high-density crowds.  
+        \item Relies on optical flow techniques.
+        \item Applicable only to a small number of scenarios.
+    \end{itemize} & 
+    \begin{comment} \begin{itemize}[leftmargin=*]
+        \item Receiver operating characteristic (ROC)
+        \item Area under the curve (AUC) metrics 
+        \item Cost of Computation
+    \end{itemize} &  \end{comment}
+     \begin{itemize}[leftmargin=*]
+        \item Further research for high-density crowds 
+    \end{itemize}\\
+    \hline
+    \end{tabular}
+\newpage
+
+\begin{tabular} {|p{0.13\textwidth}|p{0.14\textwidth}|p{0.13\textwidth}|p{0.15\textwidth}|p{0.13\textwidth}|p{0.13\textwidth}|}
+    \hline
+    \rowcolor[HTML]{D3D3D3}
+    \textbf{Title of Paper} & \textbf{Methods Used} & \textbf{Features} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Future Scope} 
+    \\
+    \hline
+     \vspace{0.1in}
+      \large \textbf{Background Subtraction in Real Applications: Challenges, Current Models and Future Directions} & 
+    \begin{itemize}[leftmargin=*]
+        \item {Gaussian Mixture Models (GMM)}: Probabilistic approach to model the background and adapt to changes over time.
+        \item ViBe Algorithm
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Efficiently separates objects in motion from a static background.
+        \item Pixel-based technique that maintains a history of background values and updates dynamically.
+        \item Combination with CNN, RNN improve background-foreground segmentation.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item GMM provides adaptability to illumination changes and dynamic backgrounds.
+        \item Computationally efficient and robust against sudden background variations.
+        \item Accuracy in complex environments with occlusions and dynamic elements.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item  GMM can be sensitive to sudden lighting changes and requires parameter tuning.
+        \item ViBe may struggle with highly dynamic scenes and complex movements.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item  Optimization for real-time applications 
+        \item  Optimization for minimal computational overhead
+    \end{itemize} \\
+
+    \hline
+    \vspace{0.1in}
+  \large \textbf{ CrowdFormer: An Overlap Patching Vision Transformer} & 
+    \begin{itemize}[leftmargin=*]
+        \item Weakly-supervised crowd counting model with tranformer-encoder and regression
+        \item Vision Transformer (ViT) model for crowd analysis. 
+        \item Maintains spatial continuity \& reduces information loss.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+         \item Preserves long-term dependencies using overlapping patches
+         \item Improves performance on crowd density estimation and localization tasks.
+         \item Employs Self Attention Mechanism
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Reduces information loss from non-overlapping patches.
+        \item Preserves local and global contextual information.
+        \item Enhances accuracy while maintaining efficiency.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Increased computational complexity compared to traditional ViTs.
+        \item Requires careful hyperparameter tuning for optimal performance.
+    \end{itemize} & 
+     \begin{itemize}[leftmargin=*]
+        \item Application in real-time applications and hybrid models.  
+    \end{itemize} 
+    \\
+    \hline
+\end{tabular}
+\newpage
+
+\begin{tabular}{|p{0.13\textwidth}|p{0.14\textwidth}|p{0.14\textwidth}|p{0.14\textwidth}|p{0.13\textwidth}|p{0.13\textwidth}|}
+    \hline
+    \rowcolor[HTML]{D3D3D3}
+    \textbf{Title of Paper} & \textbf{Methods Used} & \textbf{Features} & \textbf{Advantages} & \textbf{Disadvantages}  & \textbf{Future Scope} \\
+      \hline
+      \vspace{0.1in}
+   \large \textbf{Pyramid Vision Transformer: A Versatile Backbone for Dense Prediction} & 
+    \begin{itemize}[leftmargin=*]
+        \item Novel Transformer backbone that incorporates a hierarchical structure
+        \item Pyramid structure that progressively reduces the spatial dimensions of feature maps while increasing channel depth
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Spatial-reduction attention mechanism to mitigate high memory consumption 
+        \item Multi-stage processing to refine feature representations at different scales
+        \item PVT outperforms CNN-based backbones while maintaining efficiency
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Incorporates a hierarchical feature representation similar to CNNs.
+        \item Reduces memory and computational overhead via spatial-reduction attention.
+        \item Improves performance on dense prediction tasks such as segmentation and object detection.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+         \item Requires substantial computational resources compared to traditional CNNs.
+    \item Transformer-based models generally need large-scale training datasets for optimal performance.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Further optimizations are needed to enhance real-time processing capabilities \item Improve efficiency in resource-constrained environments
+    \end{itemize} \\
+    \hline
+    \vspace{0.1in}
+    \large \textbf{PVT v2: Improved Baselines with Pyramid Vision Transformer }& 
+    \begin{itemize}[leftmargin=*]
+        \item Improvement of PVT v1 
+        \item Employs Self Attention Mechanism
+        \item Vision Transformer (ViT) model for crowd analysis. 
+        \item Maintains spatial continuity \& reduces information loss.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+         \item Linear spatial reduction attention (LSRA) layer
+         \item Overlapping patch embedding (OPE) scheme, 
+         \item Convolutional feed-forward network (CFFN)
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item LSRA significantly lowers computational complexity \& makes model more efficient.
+        \item Overlapped patch embedding enhances the extraction of local features, improves the overall representation.
+        \item CFFN contributes to robust feature learning without fixed positional embeddings.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Increased computational complexity compared to traditional ViTs.
+        \item Requires careful hyperparameter tuning for optimal performance.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Integration with additional local operations or adaptations to other domains.
+    \end{itemize} \\
+     \hline
+\end{tabular}
+\newpage
+
+\begin{tabular}{|p{0.13\textwidth}|p{0.13\textwidth}|p{0.15\textwidth}|p{0.13\textwidth}|p{0.14\textwidth}|p{0.13\textwidth}|}
+    \hline
+    \rowcolor[HTML]{D3D3D3}
+    \textbf{Title of Paper} & \textbf{Methods Used} & \textbf{Features} & \textbf{Advantages} & \textbf{Disadvantages} &  \textbf{Future Scope} \\
+      \hline
+       \vspace{0.1in}
+   
+    \large \textbf{Transformers in Time Series: A Survey} & 
+    \begin{itemize}[leftmargin=*]
+        \item Sparse Attention Mechanisms 
+        \item Alternative positional encoding schemes tailored for continuous data.
+        \item Creation of Hybrid Models modeling.
+        \item Uses windowing and memory-efficient attention mechanisms to scale to long time series.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Hybrid modelling with convolutional networks (CNN) improves strength in sequential data
+        \item Capable of capturing long-range dependencies in time series data.
+        \item Handles multi-modal \& irregular time series data more effectively than traditional models.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Reduced quadratic complexity of standard self-attention. 
+        \item Advances in sparse attention make Transformers more computationally efficient for time series applications.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item High computational complexity, especially for long sequences.
+        \item Requires large-scale training data to generalize well.
+        \item Model interpretability remains a challenge compared to traditional statistical methods.
+        \item Hyperparameter tuning can be complex.
+    \end{itemize} & 
+    
+    \begin{itemize}[leftmargin=*]
+        \item Optimization for real-time applications 
+        \item  Optimization for minimal computational overhead
+        \item Improve interpretability
+    \end{itemize} \\
+    \hline
+     \vspace{0.1in}
+   \large \textbf{ JHU- Crowd++ : Large-Scale Crowd Counting Dataset and Benchmark Method} & 
+    \begin{itemize}[leftmargin=*]
+        \item Large-scale dataset
+        \item Benchmark methods
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Diverse scenarios
+        \item Rich annotations
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Diverse scenarios and environmental conditions.  
+        \item Rich annotations at both image and head level.
+        \item Distractor images.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Annotation complexity
+        \item Limited diversity in distractors.
+        \item Limited focus on temporal data.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Exploration of temporal data needed
+        \item Generalization to unseen scenarios
+        \item Enhancing the dataset diversity and leveraging multi-camera systems.
+    \end{itemize} \\
+    \hline
+\end{tabular}
+\end{adjustbox}
+\end{document}
+
+
+\begin{comment}
+     Machine Learning for Dense Crowd Direction Prediction Using LSTM & 
+    \begin{itemize}[leftmargin=*]
+        \item LSTM model predicts movement trajectories based on past positions.
+        \item Cone of vision concept for influence detection.
+        \item "Unit Angle" quantifies these neighbors. 
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Trajectory prediction
+        \item Cone of vision concept
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Suitable for both structured and unstructured crowds.  
+        \item Retains long-term dependencies for more accurate predictions.
+        \item Improves trajectory prediction for individuals in crowds.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Requires careful tuning for optimal performance.
+        \item Expensive requiring high-quality sequential data.  
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Real-world testing required due to complexity.
+    \end{itemize} \\\end{comment}
+
+
+
+        \begin{comment}
+    \vspace{0.1in}
+     A CNN-RNN Neural Network Join LSTM for Crowd Counting & 
+    \begin{itemize}[leftmargin=*]
+        \item CNN for feature extraction \&
+        \item LSTM for context relevance to estimate crowd density
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Estimates crowd density
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item High accuracy in dense settings
+        \item Robust across densities
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Poor performance in sparse crowds
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Optimization needed for sparse environments
+    \end{itemize} \\
+    \hline
+    \end{comment}
+
+
+        \begin{comment}
+    Fusion of CCTV Video and Spatial Information for Automated Crowd Congestion Monitoring & 
+    \begin{itemize}[leftmargin=*]
+        \item CCTV video integration with Crowd mobility graphs (CM graph)
+        \item Trajectory is predicted with real-time monitoring.
+        \item  Kalman filter predictor is used to develop SORT \& DeepSORT for tracking.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Real-time monitoring
+        \item Visualization of congestion
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Predictive capabilities  
+        \item Real-time monitoring.  
+        \item  Effective in visualizing congestion across urban spaces.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Depends on video quality \& computational resources
+        \item Challenges with dense crowds
+    \end{itemize} & 
+    \end{comment}
+   \begin{comment} \begin{itemize}[leftmargin=*]
+        \itemtracking 
+        \item  YoloV7-tiny + SORT: MODA (62.8\%), MOTA (70.8\%), Recall(72.2\%), Precision(98.2\%)
+        \item YoloV7-tiny + DeepSORT:  MODA (73.7\%), MOTA (81.2\%), Recall(86.2\%), Precision (94.6\%)
+    \end{itemize} &  
+    \end{comment}
+    \begin{comment}
+    Improvements needed for high-density scenarios \\
+     \end{comment}
+
+
+         \begin{comment} 
+    Abnormal Crowd Behavior Detection Using Motion Information Images and CNN & 
+    \begin{itemize}[leftmargin=*]
+        \item Optical flow generate Motion Information Images (MIIs)
+        \item CNN classified video frames to detect abnormality
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item MIIs for motion representation
+        \item Abnormality detection
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item  MIIs allow for better representation of crowd motion.  
+        \item Achieves state-of-the-art results.
+        \item CNN architecture is simple, 3 layers.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Computationally intensive
+        \item Limited to binary classification (normal/abnormal behavior).
+        \item MII formation takes a considerable amount of time.
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+      \textbf{  \item UMN Dataset : }
+                \item  MII + CNN: 99.08
+                \item MII + ResNet-50: 98.89
+           
+        \textbf{\item PETS2009 :}
+                \item  MII + CNN: 98.39
+                \item MII + ResNet-50: 97.04
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Explore multi-class detection
+    \end{itemize} \\
+    \hline
+\end{comment}

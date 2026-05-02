@@ -1,0 +1,164 @@
+\documentclass{beamer}
+
+% Theme
+\usetheme{Madrid}
+\usecolortheme{beaver}
+
+% Metadata
+\title{Optimizing YOLOv11 for Edge Deployment}
+\subtitle{Quantization and implementation on Raspberry Pi}
+\author{Final Year Project Team}
+\date{\today}
+
+\begin{document}
+
+% Title Slideå
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% Introduction
+\begin{frame}{Introduction}
+    \begin{itemize}
+        \item \textbf{Objective}: Deploy a License Plate Recognition (LPR) system on a Raspberry Pi.
+        \item \textbf{Constraint}: The Raspberry Pi has limited compute (CPU-only inference) and memory compared to desktop GPUs.
+        \item \textbf{Solution}: Use a highly efficient object detection model (YOLOv11) and optimize it using \textbf{Quantization}.
+    \end{itemize}
+\end{frame}
+
+% The Model
+\begin{frame}{The Model: YOLOv11}
+    \begin{itemize}
+        \item \textbf{Architecture}: Ultralytics YOLOv11 (segmentation/detection).
+        \item \textbf{Original Format}: PyTorch (.pt), FP32 (Floating Point 32-bit).
+        \item \textbf{Issue}: FP32 models are heavy (~20MB+) and slow on ARM CPUs.
+        \item \textbf{Optimization Target}: INT8 (Integer 8-bit), reducing size by $\approx 4\times$ and effectively utilizing ARM NEON instructions.
+    \end{itemize}
+\end{frame}
+
+% Quantization Workflow: Preparation
+\begin{frame}{Quantization Workflow: Preparation}
+    \begin{enumerate}
+        \item \textbf{Environment Setup}: Installed `onnx`, `onnxruntime`, and `onnxruntime-tools`.
+        \item \textbf{Model Validation}: Loaded the original FP32 model (`license-plate-finetune-v1l.onnx`) and verified its structural integrity.
+        \item \textbf{Input Identification}: Identified the serving input node `'images'` accepting tensor shape $(1, 3, 640, 640)$.
+    \end{enumerate}
+\end{frame}
+
+% Quantization Workflow: Calibration
+\begin{frame}{Quantization Workflow: Calibration}
+    \begin{itemize}
+        \item \textbf{Why Calibration?} Static quantization requires running representative data through the model to determine dynamic ranges (min/max) for activations.
+        \item \textbf{Calibration Reader}: Implemented a `LicensePlateCalibrationReader` class to:
+        \begin{itemize}
+            \item Preprocess images (Resize, Normalize).
+            \item Reorder channels (HWC $\to$ CHW).
+            \item Batch data for the quantizer.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% Quantization Process
+\begin{frame}{Process: Static INT8 Quantization}
+    \begin{itemize}
+        \item We used the ONNX Runtime Quantization API.
+        \item \textbf{Method}: Static Quantization.
+        \item \textbf{Output}: `license-plate-int8.onnx`.
+        \item \textbf{Result}: Model weights and activations converted from 32-bit floating point to 8-bit integers, effectively compressing the model size by $\approx 75\%$.
+    \end{itemize}
+\end{frame}
+
+% Verification & Comparison
+\begin{frame}{Verification & Comparison}
+    \begin{itemize}
+        \item \textbf{Inference Setup}: Created a pipeline to run both FP32 and INT8 models using `onnxruntime`.
+        \item \textbf{Visualization}: Implemented `draw\_boxes` to overlay detections.
+        \item \textbf{Side-by-Side Comparison}:
+        \begin{itemize}
+            \item Visual validation confirmed that the Quantized INT8 model maintained high accuracy.
+            \item Detected bounding boxes and confidence scores were nearly identical to the original FP32 model.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% The Problem: Execution Provider Error
+\begin{frame}{The Challenge: Deployment Failure}
+    \begin{itemize}
+        \item We exported the model to ONNX using standard dynamic quantization:
+        \begin{code}
+            yolo export model=yolo11n.pt format=onnx int8=True
+        \end{code}
+        \item \textbf{Error on Raspberry Pi}:
+        \begin{alertblock}{ONNX Runtime Error}
+            \texttt{Status: NOT\_IMPLEMENTED : ConvInteger} \\
+            \texttt{Could not find an implementation for ConvInteger(10) node with name '/model.0/conv/ConvInteger'}
+        \end{alertblock}
+        \item \textbf{Reason}: The \texttt{ConvInteger} operator with \textbf{INT8} weights (signed) was not supported by the specific CPU kernel available on the target `onnxruntime` build for aarch64.
+    \end{itemize}
+\end{frame}
+
+% The Diagnosis
+\begin{frame}{Diagnosis & Technical Analysis}
+    \begin{itemize}
+        \item \textbf{Operator}: \texttt{ConvInteger} performs quantized convolution.
+        \item \textbf{Inputs}: Input Data ($x$) and Weights ($w$), plus Zero Points ($x_{zp}, w_{zp}$).
+        \item \textbf{Incompatibility}:
+        \begin{itemize}
+            \item The exported model used \textbf{INT8} (Signed) for weights.
+            \item The specific runtime/hardware backend required \textbf{UINT8} (Unsigned) weights for this operator to function correctly.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% The Fix
+\begin{frame}{The Solution: Weight Transformation}
+    \begin{itemize}
+        \item We developed a custom script \texttt{fix\_quantization.py} to patch the ONNX graph directly.
+        \item \textbf{Algorithm}:
+        \begin{enumerate}
+            \item Load the ONNX model graph.
+            \item Iterate through all \texttt{ConvInteger} nodes.
+            \item Check if weights are INT8.
+            \item \textbf{Shift Weights}: $W_{uint8} = W_{int8} + 128$.
+            \item \textbf{Shift Zero Point}: $ZP_{new} = ZP_{old} + 128$.
+            \item Update the model initializers in-place.
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+% Code Snippet
+\begin{frame}[fragile]{Implementation Details}
+    \begin{block}{Python Fix Snippet}
+    \begin{verbatim}
+# Convert Weights from INT8 to UINT8
+w_data_u8 = (w_data.astype(np.int16) + 128).astype(np.uint8)
+
+# Update the Zero Point to match
+w_zp_data_u8 = (w_zp_data.astype(np.int16) + 128)
+               .astype(np.uint8)
+
+# Replace in ONNX Graph
+model.graph.initializer.remove(w_init)
+model.graph.initializer.extend([new_w_init])
+    \end{verbatim}
+    \end{block}
+\end{frame}
+
+% Results
+\begin{frame}{Results}
+    \begin{itemize}
+        \item \textbf{Functional Success}: The patched \texttt{fixed\_model.onnx} loads correctly on the Raspberry Pi without errors.
+        \item \textbf{Performance}:
+        \begin{itemize}
+            \item Model Size: Reduced to $\approx 6.5$ MB.
+            \item Inference Speed: Real-time capability on CPU.
+        \end{itemize}
+        \item \textbf{Conclusion}: Direct graph manipulation allowed us to bypass runtime limitations and deploy the quantized model successfully.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \centering \Huge \textbf{Thank You}
+\end{frame}
+
+\end{document}

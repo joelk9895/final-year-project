@@ -1,0 +1,229 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{adjustbox}
+\usepackage[table,xcdraw]{xcolor} 
+\usepackage{enumitem}
+\usepackage{longtable}
+
+\geometry{left=0.5in, right=0.5in, top=0.75in, bottom=0.75in}
+
+%change this to make changes to table format
+\setlist[itemize,1]{label=$\circ$, leftmargin=*}
+
+\begin{document}
+\small
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|}
+    \hline
+    \rowcolor[HTML]{D3D3D3}
+    \textbf{Title of Paper} & \textbf{Methods Used} & \textbf{Features} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Performance Metrics} & \textbf{Future Scope} \\
+    
+    \hline
+    Face Recognition Techniques Based on 2D LBP, HOG, and Multiclass SVM & 
+    \begin{itemize}[leftmargin=*]
+        \item LBP, HOG
+        \item Multiclass SVM
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Texture and edge detection
+        \item Handles pose variation
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Robust features
+        \item Accurate in controlled conditions
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item LBP struggles with edges
+        \item SVM scales poorly
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item HOG: 91.5\%, LBP: 92.7\%
+        \item Tested on 1300 images
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Fusion methods for better accuracy
+        \item Real-time applications
+    \end{itemize} \\
+    
+    \hline
+    Effective Face Verification Systems Based on HOG and Deep Learning & 
+    \begin{itemize}[leftmargin=*]
+        \item HOG + SVM
+        \item ResNet-50, FaceNet
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Deep learning for encoding
+        \item Evaluated on multiple datasets
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item 100\% accuracy (BioID, FERET)
+        \item High robustness to variations
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item High computational demand
+        \item Complex training
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item HOG+SVM: 99.6\%
+        \item ResNet-50: 99.6\% on ColorFERET
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Speed optimization
+        \item Deployment on edge devices
+    \end{itemize} \\
+    
+    \hline
+    Face Recognition and Detection using Random Forest & 
+    \begin{itemize}[leftmargin=*]
+        \item Random Forest (RF)
+        \item LBP + HOG
+        \item Viola-Jones Algorithm
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Combines LBP and HOG
+        \item Uses RF for classification
+        \item Real-time recognition
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item High accuracy in uncontrolled environments
+        \item RF handles large feature spaces
+        \item Low computational cost
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Intensive Computation
+        \item RF depends on tree number
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Accuracy of 97.6\%
+        \item Tested on Mediu-S-DB
+        \item Faster recognition with LBP+HOG
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Improve recognition under extreme lighting
+        \item Integration with surveillance systems
+    \end{itemize} \\
+
+        \hline
+    Face Recognition Based on MTCNN and Integrated Application of FaceNet and LBP Method & 
+    \begin{itemize}[leftmargin=*]
+        \item Multi-task Cascaded Convolutional Networks (MTCNN)
+        \item FaceNet
+        \item Local Binary Pattern (LBP)
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Parallel use of FaceNet and LBP
+        \item Enhanced illumination robustness
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item High recognition accuracy in lighting-variant conditions
+        \item Combines CNN accuracy with LBP’s illumination insensitivity
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Increased complexity and computation
+        \item LBP may reduce accuracy under consistent lighting
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Accuracy on Markus Weber’s dataset: up to 98.5\%
+        \item Accuracy on ORL dataset: 99.5\%
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Optimize FaceNet and LBP weighting for various conditions
+        \item Further application in uncontrolled environments
+    \end{itemize} \\
+
+    \hline
+
+\end{tabular}
+\end{adjustbox}
+
+\newpage
+
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|p{0.11\textwidth}|}
+    \hline
+    \rowcolor[HTML]{D3D3D3}
+    \textbf{Title of Paper} & \textbf{Methods Used} & \textbf{Features} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Performance Metrics} & \textbf{Future Scope} \\
+    
+    \hline
+    FaceNet: A Unified Embedding for Face Recognition and Clustering & 
+    \begin{itemize}[leftmargin=*]
+        \item Deep Convolutional Network
+        \item Triplet Loss
+        \item Euclidean Embedding
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Efficient 128-Dimensional Embedding
+        \item Direct face similarity via Euclidean distance
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item High accuracy with low memory requirement
+        \item Achieves state-of-the-art results on benchmarks
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item High computational cost
+        \item Requires extensive labeled data
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item 99.63\% accuracy on Labeled Faces in the Wild (LFW)
+        \item 95.12\% on YouTube Faces DB
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Optimize for mobile deployment
+        \item Reduce computation for real-time applications
+    \end{itemize} \\
+    \hline
+    RetinaFace: Single-stage Dense Face Localization in the Wild & 
+    \begin{itemize}[leftmargin=*]
+        \item Single-stage Dense Face Detection
+        \item Multi-task Learning (Landmarks, Face Box, Dense Regression)
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Simultaneous prediction of face score, box, landmarks, and dense 3D face vertices
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item High localization accuracy
+        \item Real-time performance on VGA resolution
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Higher false positives in challenging settings
+        \item Requires additional annotations
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item 91.4\% AP on WIDER FACE (Hard subset)
+        \item 89.59\% TAR at 1e-6 FAR on IJB-C dataset
+    \end{itemize} & 
+    \begin{itemize}[leftmargin=*]
+        \item Enhanced precision for tiny faces
+        \item Potential integration with recognition systems for improved accuracy
+    \end{itemize} \\
+    \hline
+
+
+\end{tabular}
+\end{adjustbox}
+
+
+
+\newpage
+
+\paragraph{Paper 1: "Face Recognition Techniques Based on 2D Local Binary Pattern, Histogram of Oriented Gradient, and Multiclass Support Vector Machines for Secure Document Authentication":} 
+This study focuses on a robust face recognition method that combines Local Binary Pattern (LBP) and Histogram of Oriented Gradients (HOG) for feature extraction, employing Multiclass Support Vector Machines (SVM) for classification. The approach effectively addresses challenges like pose variation and occlusion. The proposed system demonstrated a recognition accuracy of 91.5\% with HOG and 92.69\% with LBP on a dataset of 1300 images. The authors advocate for future research into fusion techniques to enhance recognition accuracy and real-time implementation.
+
+\paragraph{Paper 2: "Effective Face Verification Systems Based on the Histogram of Oriented Gradients and Deep Learning Techniques":} 
+This paper evaluates the effectiveness of face verification systems utilizing Histogram of Oriented Gradients (HOG) combined with Support Vector Machines (SVM) for detection and deep learning architectures like ResNet-50 and FaceNet for verification. The system achieved 100\% accuracy on the BioID and FERET datasets, showcasing robustness against variations in pose and lighting conditions. However, the deep learning models require substantial computational resources. The authors suggest future enhancements could focus on optimizing the models for speed and deploying them on edge devices for real-world applications.
+
+\paragraph{Paper 3: "Face Recognition and Detection using Random Forest":} 
+This paper presents a face recognition system that utilizes a combination of Random Forest (RF), Local Binary Pattern (LBP), and Histogram of Oriented Gradients (HOG) for feature extraction, along with the Viola-Jones algorithm for face detection. The proposed method achieves real-time recognition with high accuracy, particularly in uncontrolled environments. The system effectively handles large feature spaces and maintains a low computational cost. The results indicate an accuracy of 97.6\% on the Mediu staff database. Future work suggests enhancing performance under extreme lighting conditions and integrating the system into surveillance applications.
+
+\paragraph{ Paper 4: "Face Recognition Based on MTCNN and Integrated Application of FaceNet and LBP Method":}
+This paper presents a face recognition model that combines Multi-task Cascaded Convolutional Networks (MTCNN), FaceNet, and Local Binary Pattern (LBP) for improved accuracy under various lighting conditions. By leveraging the strengths of both FaceNet for deep learning-based accuracy and LBP for illumination insensitivity, the method achieves high recognition rates in environments with variable lighting. Tested on Markus Weber’s and ORL datasets, it recorded accuracies of 98.5\% and 99.5\%, respectively. Future work suggests optimizing the weighting between FaceNet and LBP and expanding applications in uncontrolled environments.
+
+\paragraph{ Paper 5: "FaceNet: A Unified Embedding for Face Recognition and Clustering":}
+This study introduces FaceNet, a face recognition model using deep convolutional networks with triplet loss to map face images to a Euclidean embedding space, where face similarity is measured by distance. This efficient 128-dimensional embedding provides high accuracy with minimal memory needs, achieving benchmark results of 99.63\% on the Labeled Faces in the Wild (LFW) dataset and 95.12\% on the YouTube Faces DB. The authors note challenges with computational cost and extensive labeling requirements. Future directions include optimizing FaceNet for mobile applications and reducing computation for real-time use.
+
+\paragraph{ Paper 6: "RetinaFace: Single-stage Dense Face Localization in the Wild":}
+RetinaFace is a robust single-stage face localization model that employs multi-task learning for simultaneous face detection, box regression, landmark, and dense 3D face prediction. It achieves high localization accuracy and real-time performance, especially useful for VGA resolution, but may encounter higher false positives in challenging settings and requires additional annotations. Tested on WIDER FACE and IJB-C datasets, RetinaFace achieves 91.4\% AP on WIDER FACE’s hard subset and 89.59\% TAR at 1e-6 FAR. Future improvements could enhance precision in detecting tiny faces and allow better integration with face recognition systems.
+
+\end{document}

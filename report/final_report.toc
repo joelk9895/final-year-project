@@ -1,0 +1,146 @@
+\contentsline {chapter}{List of Figures}{ii}{Doc-Start}%
+\contentsline {chapter}{List of Tables}{iii}{Doc-Start}%
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Proposed Project}{1}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}General Background}{1}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Motivation}{2}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}Objective of the Project}{2}{subsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.1.4}Scope of the Project}{3}{subsection.1.1.4}%
+\contentsline {chapter}{\numberline {2}Problem Statement and Solution}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Problem Statement}{4}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Problem Statement}{4}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Proposed Solution}{5}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Innovation}{6}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}Comparison with Existing Approaches}{6}{subsection.2.1.4}%
+\contentsline {chapter}{\numberline {3}Literature Survey Report}{7}{chapter.3}%
+\contentsline {subsection}{Literature Survey Table}{7}{section*.3}%
+\contentsline {section}{\numberline {3.1}Overview}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Literature Survey}{7}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Paper 1: Symbolic Knowledge Distillation for LLMs -- Acharya et al. (IEEE Trans. on AI, 2024)}{7}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Paper 2: XAI-Driven Knowledge Distillation -- Cantini et al. (Journal of Big Data, 2024)}{8}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Paper 3: Quantization Robust Pruning -- J. Kim (IEEE Access, 2023)}{8}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Paper 4: A Comprehensive Study of Quantization Techniques -- Lang et al. (ACM Computing Surveys, 2023)}{9}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}Paper 5: EdgeMoE: Fast On-Device Inference -- R. Yi et al. (IEEE Trans. on Mobile Computing, 2025)}{9}{subsection.3.2.5}%
+\contentsline {subsection}{\numberline {3.2.6}Paper 6: Multi-Token Prediction for Efficient Inference -- M. Samragh et al. (arXiv, 2025)}{10}{subsection.3.2.6}%
+\contentsline {subsection}{\numberline {3.2.7}Paper 7: Sparsity in Deep Learning -- T. Hoefler et al. (JMLR, 2021)}{10}{subsection.3.2.7}%
+\contentsline {subsection}{\numberline {3.2.8}Paper 8: Efficient Hybrid Compression -- Malihi et al. (Neurocomputing, 2023)}{10}{subsection.3.2.8}%
+\contentsline {subsection}{\numberline {3.2.9}Paper 9: Consumer Preferences of EV Charging -- Hardman et al. (Transportation Research Part D, 2018)}{11}{subsection.3.2.9}%
+\contentsline {subsection}{\numberline {3.2.10}Paper 10: Edge Computing: Vision and Challenges -- Shi et al. (IEEE IoT Journal, 2016)}{11}{subsection.3.2.10}%
+\contentsline {subsection}{\numberline {3.2.11}Paper 11: Smart EV Charging with OCPP -- Lee et al. (IEEE Trans. on Industrial Informatics, 2021)}{12}{subsection.3.2.11}%
+\contentsline {subsection}{\numberline {3.2.12}Paper 12: Deep Learning ALPR -- Laroca et al. (IEEE Trans. on ITS, 2021)}{12}{subsection.3.2.12}%
+\contentsline {subsection}{\numberline {3.2.13}Paper 13: IoT-Based Smart EV Charging with Edge Intelligence -- Zhang et al. (IEEE Access, 2022)}{13}{subsection.3.2.13}%
+\contentsline {subsection}{\numberline {3.2.14}Paper 14: Quantizing Deep CNNs for Efficient Inference -- Krishnamoorthi (arXiv, 2018)}{13}{subsection.3.2.14}%
+\contentsline {subsection}{\numberline {3.2.15}Paper 15: YOLO-Based LPR for Smart Parking -- Hendry and Chen (Image and Vision Computing, 2019)}{14}{subsection.3.2.15}%
+\contentsline {section}{\numberline {3.3}Literature Survey Comparison Table}{14}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Theoretical Background}{16}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Object Detection and YOLO Architecture}{16}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Evolution of Object Detection}{16}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}The YOLO Paradigm}{16}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Mathematical Formulation of YOLO Detection}{16}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Loss Function}{17}{subsection.4.1.4}%
+\contentsline {section}{\numberline {4.2}Deep Learning Quantization Mathematics}{18}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Motivation for Quantization}{18}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Affine Quantization Framework}{18}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Determining Scale and Zero-Point}{18}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Quantized Matrix Multiplication}{19}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Edge Computing and ARM Architecture}{19}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}The Shift to Edge AI}{19}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Raspberry Pi 4B and Broadcom BCM2711}{19}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}ARM NEON SIMD Architecture}{19}{subsection.4.3.3}%
+\contentsline {chapter}{\numberline {5}Software Requirements Specification}{20}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Introduction}{20}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Purpose}{20}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Document Convention}{20}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Intended Audience and Reading Suggestions}{20}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Project Scope}{21}{subsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.1.5}Overview of Developer's Responsibilities}{21}{subsection.5.1.5}%
+\contentsline {section}{\numberline {5.2}Overall Description}{21}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Product Perspective}{21}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Product Functions}{22}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}User Classes and Characteristics}{22}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}Technological Stack}{23}{subsection.5.2.4}%
+\contentsline {subsection}{\numberline {5.2.5}Operating Environment}{23}{subsection.5.2.5}%
+\contentsline {subsection}{\numberline {5.2.6}General Constraints}{23}{subsection.5.2.6}%
+\contentsline {subsection}{\numberline {5.2.7}Design \& Implementation Constraints}{23}{subsection.5.2.7}%
+\contentsline {subsection}{\numberline {5.2.8}Assumptions and Dependencies}{24}{subsection.5.2.8}%
+\contentsline {subsubsection}{Assumptions}{24}{subsubsection*.6}%
+\contentsline {subsubsection}{Dependencies}{24}{subsubsection*.7}%
+\contentsline {section}{\numberline {5.3}External Interface Requirements}{24}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}User Interfaces}{24}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Hardware Interfaces}{24}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Software Interfaces}{25}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Communication Interface}{25}{subsection.5.3.4}%
+\contentsline {section}{\numberline {5.4}Hardware \& Software Requirements}{25}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Hardware Requirements}{25}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Software Requirements}{26}{subsection.5.4.2}%
+\contentsline {section}{\numberline {5.5}Functional Requirements}{26}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Non-Functional Requirements}{27}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Performance Requirements}{27}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}Security Requirements}{27}{subsection.5.6.2}%
+\contentsline {subsection}{\numberline {5.6.3}Safety Requirements}{27}{subsection.5.6.3}%
+\contentsline {subsection}{\numberline {5.6.4}Software Quality Requirements}{27}{subsection.5.6.4}%
+\contentsline {chapter}{\numberline {6}System Design}{28}{chapter.6}%
+\contentsline {section}{\numberline {6.1}System Architecture}{28}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Architectural Design Principles}{29}{subsection.6.1.1}%
+\contentsline {section}{\numberline {6.2}Use Case Diagram}{30}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Data Flow Diagrams}{31}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Level 0 DFD (Context Diagram)}{31}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Level 1 DFD}{31}{subsection.6.3.2}%
+\contentsline {section}{\numberline {6.4}Database Design}{31}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Entity-Relationship Diagram}{32}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Database Schema}{32}{subsection.6.4.2}%
+\contentsline {section}{\numberline {6.5}Module Description}{32}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Module 1: Camera Streaming Module (iOS)}{32}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Module 2: Edge Inference Module (Raspberry Pi)}{33}{subsection.6.5.2}%
+\contentsline {subsection}{\numberline {6.5.3}Module 3: OCR and Validation Module}{33}{subsection.6.5.3}%
+\contentsline {subsection}{\numberline {6.5.4}Module 4: Database and Verification Module}{33}{subsection.6.5.4}%
+\contentsline {chapter}{\numberline {7}Implementation}{35}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Model Quantization Pipeline}{35}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Step 1: ONNX Model Export}{35}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Step 2: Calibration Data Preparation}{35}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Step 3: Static INT8 Quantization}{36}{subsection.7.1.3}%
+\contentsline {subsection}{\numberline {7.1.4}Step 4: ONNX Graph Patching (INT8 to UINT8)}{36}{subsection.7.1.4}%
+\contentsline {subsection}{\numberline {7.1.5}Quantization Impact Analysis}{37}{subsection.7.1.5}%
+\contentsline {section}{\numberline {7.2}WebSocket Server Implementation}{38}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Server Architecture}{38}{subsection.7.2.1}%
+\contentsline {section}{\numberline {7.3}iOS Client Implementation}{39}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Camera Capture Pipeline}{39}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Detection Overlay Rendering}{40}{subsection.7.3.2}%
+\contentsline {section}{\numberline {7.4}Implementation -- Models Used}{40}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Development Tools}{40}{section.7.5}%
+\contentsline {chapter}{\numberline {8}Testing}{41}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Testing Methodology}{41}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Unit Testing}{41}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Integration Testing}{42}{section.8.3}%
+\contentsline {section}{\numberline {8.4}System Testing}{43}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Performance Testing}{43}{section.8.5}%
+\contentsline {section}{\numberline {8.6}Testing Conclusion}{46}{section.8.6}%
+\contentsline {chapter}{\numberline {9}Results \& Analysis}{47}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Quantization Results}{47}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Detection Accuracy Analysis}{47}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Inference Performance Analysis}{48}{section.9.3}%
+\contentsline {section}{\numberline {9.4}End-to-End Pipeline Performance}{48}{section.9.4}%
+\contentsline {section}{\numberline {9.5}OCR Accuracy Analysis}{49}{section.9.5}%
+\contentsline {section}{\numberline {9.6}Key Observations}{49}{section.9.6}%
+\contentsline {chapter}{\numberline {10}Conclusion}{51}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Summary of Achievements}{51}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Technical Contributions}{51}{section.10.2}%
+\contentsline {section}{\numberline {10.3}Limitations}{52}{section.10.3}%
+\contentsline {chapter}{\numberline {11}Future Scope}{53}{chapter.11}%
+\contentsline {chapter}{Bibliography}{54}{chapter*.31}%
+\contentsline {chapter}{Appendix A: Glossary}{55}{chapter*.31}%
+\contentsline {chapter}{Appendix B: Acronyms}{56}{chapter*.31}%
+\contentsline {chapter}{Appendix C: System Functions and Libraries Reference}{57}{chapter*.31}%
+\contentsline {section}{\numberline {11.1}System Dependencies and Libraries}{57}{section.11.1}%
+\contentsline {subsection}{\numberline {11.1.1}Python Ecosystem (Server-Side)}{57}{subsection.11.1.1}%
+\contentsline {subsection}{\numberline {11.1.2}Swift Ecosystem (iOS Client-Side)}{58}{subsection.11.1.2}%
+\contentsline {section}{\numberline {11.2}Core Edge Server Functions (\texttt {pi\_server.py})}{59}{section.11.2}%
+\contentsline {subsection}{\numberline {11.2.1}\texttt {decode\_image(message)}}{59}{subsection.11.2.1}%
+\contentsline {subsection}{\numberline {11.2.2}\texttt {validate\_plate(text)}}{59}{subsection.11.2.2}%
+\contentsline {subsection}{\numberline {11.2.3}\texttt {handle\_connection(websocket)}}{59}{subsection.11.2.3}%
+\contentsline {subsection}{\numberline {11.2.4}\texttt {save\_debug\_image(image, results)}}{60}{subsection.11.2.4}%
+\contentsline {subsection}{\numberline {11.2.5}\texttt {main(model\_path, port)}}{60}{subsection.11.2.5}%
+\contentsline {section}{\numberline {11.3}Quantization Graph Patcher (\texttt {fix\_quantization.py})}{60}{section.11.3}%
+\contentsline {subsection}{\numberline {11.3.1}\texttt {fix\_conv\_integer\_for\_arm(model\_path, output\_path)}}{60}{subsection.11.3.1}%
+\contentsline {subsection}{\numberline {11.3.2}\texttt {CameraManager} Architecture}{60}{subsection.11.3.2}%
+\contentsline {subsection}{\numberline {11.3.3}\texttt {WebSocketManager} Architecture}{61}{subsection.11.3.3}%

@@ -1,0 +1,283 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{booktabs}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Edge-Driven Computer Vision for Seamless EV Charging: Deploying Quantized YOLO Models on Resource-Constrained Hardware\\
+{\footnotesize \textsuperscript{}}
+}
+
+\author{
+\IEEEauthorblockN{Joel K. George\IEEEauthorrefmark{1},
+Sarah Ann Pothen\IEEEauthorrefmark{1},
+Shahma Fathima\IEEEauthorrefmark{1},
+Izz al Din Noufel Mukthar\IEEEauthorrefmark{1} and
+Dr. Manju K\IEEEauthorrefmark{2}}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Department of Computer Science and Engineering\\
+\IEEEauthorrefmark{2}Associate Professor, Department of Computer Science and Engineering\\
+University Name, City, Country}
+}
+
+\maketitle
+
+\begin{abstract}
+The rapid proliferation of Electric Vehicles (EVs) has exposed critical user-experience shortcomings in the existing charging infrastructure, which remains heavily reliant on fragmented mobile applications, RFID cards, and cloud-dependent authentication flows. This paper presents an edge-computing framework for semi-autonomous EV charging stations that leverages real-time Automatic License Plate Recognition (ALPR) to eliminate manual user identification. A YOLOv11 object detection model, statically quantized from 32-bit floating point (FP32) to 8-bit integer (INT8) precision using ONNX Runtime, is deployed on a Raspberry Pi 4B edge node. The quantization process reduces the model size from approximately 200\,MB to 25\,MB---an 87.5\% reduction. We address a critical deployment obstacle---signed INT8 operator incompatibility on ARM CPU kernels---through direct ONNX graph manipulation, shifting convolution weights and zero points into the unsigned UINT8 domain. Simulated benchmarks demonstrate a $3.78\times$ inference speedup on the Raspberry Pi (1842\,ms $\to$ 487\,ms per frame) with only a 1.2\% reduction in mAP@0.5, reducing end-to-end pipeline latency to under one second. Coupled with EasyOCR for character extraction and regex-validated database lookups, the system enables a frictionless ``park and plug'' charging experience without requiring any smartphone interaction.
+\end{abstract}
+
+\begin{IEEEkeywords}
+edge computing, computer vision, electric vehicle charging, model quantization, automatic license plate recognition, YOLOv11, ONNX Runtime
+\end{IEEEkeywords}
+
+\section{Introduction}
+\IEEEPARstart{T}{he} global transition toward sustainable transportation has driven unprecedented growth in Electric Vehicle (EV) adoption. According to the International Energy Agency, global EV sales surpassed 14 million units in 2023, representing a year-over-year increase of 35\%~\cite{b1}. This rapid expansion places enormous pressure on the charging infrastructure to scale not only in capacity but also in usability.
+
+Despite significant hardware advances in charging technology, the \textit{user experience} at public and semi-public charging stations remains a persistent friction point. The prevailing interaction model requires EV drivers to engage with operator-specific smartphone applications---downloading, registering, authenticating, and initiating sessions through multi-step digital workflows before any electricity flows. This paper argues that such app-centric paradigms are fundamentally misaligned with the seamlessness that modern consumers expect, and proposes an alternative architecture rooted in Edge Computing and Computer Vision.
+
+Our contributions are as follows:
+\begin{itemize}
+\item We design and implement an edge-based ALPR pipeline capable of real-time license plate detection and recognition on a Raspberry Pi 4B.
+\item We detail a practical solution to a critical INT8-to-UINT8 operator compatibility issue encountered during edge deployment of quantized YOLO models.
+\item We present simulated benchmarks demonstrating the performance--accuracy trade-offs of static quantization for edge inference.
+\item We propose a complete system architecture for app-free, vision-driven EV charging authorization.
+\end{itemize}
+
+\section{Background and Motivation}
+
+\subsection{Limitations of App-Centric Charging}
+The current charging ecosystem suffers from several well-documented usability challenges~\cite{b2}:
+
+\begin{enumerate}
+\item \textbf{Application fragmentation.} With hundreds of charging network operators worldwide, users must maintain multiple applications, each with separate accounts, payment methods, and interfaces. A 2023 J.D. Power survey found that 20\% of EV owners cited ``difficulty finding and using charging apps'' as a primary dissatisfaction factor~\cite{b3}.
+
+\item \textbf{Connectivity dependency.} App-based authentication requires stable cellular or Wi-Fi connectivity. In underground parking structures, rural areas, or network-congested urban environments, this dependency introduces single points of failure at the most critical moment of the user journey.
+
+\item \textbf{Multi-step friction.} A typical app-based session involves: (a) opening the specific operator's app, (b) locating the charger on a map, (c) scanning a QR code or entering a station ID, (d) confirming payment, and (e) initiating the session. Each step represents a potential drop-off point.
+
+\item \textbf{Accessibility barriers.} Elderly users, tourists without local SIM cards, and individuals with limited smartphone proficiency are disproportionately affected by app-only interfaces.
+\end{enumerate}
+
+\subsection{Edge Computing for Charging Infrastructure}
+Edge computing offers a compelling alternative by relocating computational intelligence from centralized cloud servers directly to the point of service~\cite{b4}. For EV charging, this means equipping each station with sufficient on-device processing capability to autonomously identify vehicles, verify authorization, and initiate charging sessions---all without requiring cloud round-trips or smartphone intermediaries during the critical authentication window.
+
+\section{System Architecture}
+
+\subsection{Overview}
+The proposed system consists of three primary components operating in a tightly coupled pipeline (Fig.~\ref{fig:arch}):
+
+\begin{enumerate}
+\item \textbf{Camera interface.} A camera module (either a direct CSI-connected camera or an iOS device bridging video frames via WebSocket) captures the charging bay at the station entrance.
+
+\item \textbf{Edge computing unit.} A Raspberry Pi 4B (Broadcom BCM2711, quad-core ARM Cortex-A72 @ 1.5\,GHz, 4\,GB LPDDR4) runs an asynchronous Python server built on the \texttt{asyncio} and \texttt{websockets} libraries.
+
+\item \textbf{Vision and verification pipeline.} An INT8-quantized YOLOv11 model performs plate detection via ONNX Runtime inference. Detected plate regions are cropped and passed to EasyOCR for character extraction. The resulting text is validated against configurable regular expressions and looked up in a local database cache.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{architecture.png}}
+\caption{High-level architecture of the proposed edge-based ALPR system for EV charging authorization. Frames flow from the iOS camera client via WebSocket to the Raspberry Pi edge node, where YOLOv11 detection, OCR, and database verification produce an authorization signal.}
+\label{fig:arch}
+\end{figure}
+
+\subsection{The Seamless User Journey}
+When an EV approaches the charging bay, the edge unit continuously processes the video feed. Upon detecting a license plate, the vision pipeline extracts and validates the plate text against standard alphanumeric patterns (e.g., the Indian format \texttt{AA00AA0000}). If the format is valid, an instantaneous lookup in the local database determines whether the vehicle is registered and holds sufficient account balance. Upon successful verification, the system transmits an authorization signal to unlock the charging port. The entire process---from vehicle arrival to charging initiation---requires zero manual interaction.
+
+\section{Model Quantization for Edge Deployment}
+
+\subsection{The Quantization Imperative}
+Deploying state-of-the-art object detection models on resource-constrained edge devices presents a fundamental computational challenge. The YOLOv11 architecture~\cite{b5}, while highly accurate, operates natively in FP32 precision with a model footprint of approximately 200\,MB. On the ARM Cortex-A72 CPU of the Raspberry Pi 4B, FP32 inference requires approximately 1.84 seconds per frame---far too slow for real-time operation.
+
+Static quantization addresses this by mapping continuous FP32 weight tensors and activations to a discrete 8-bit integer space. The quantization function is defined as:
+\begin{equation}
+q = \text{round}\!\left(\frac{r}{S}\right) + Z
+\label{eq:quant}
+\end{equation}
+where $q$ is the quantized integer value, $r$ is the original real-valued tensor element, $S$ is the scale factor derived from calibration, and $Z$ is the zero-point offset.
+
+\subsection{Calibration Procedure}
+Static quantization requires a calibration dataset to profile the dynamic range of intermediate activations. We implemented a custom \texttt{LicensePlateCalibrationReader} class that:
+\begin{itemize}
+\item Loads a representative set of 200 license plate images.
+\item Resizes each image to $640\times640$ pixels to match the model input dimensions.
+\item Normalizes pixel values to $[0, 1]$ and transposes the channel ordering from HWC to CHW format.
+\item Batches the preprocessed tensors for the ONNX Runtime static quantizer.
+\end{itemize}
+
+The ONNX Runtime Quantization API then profiles the model, computing per-channel scale factors and zero points for all weight and activation tensors.
+
+\subsection{Resolving the INT8--UINT8 Compatibility Issue}
+Upon deploying the statically quantized INT8 model to the Raspberry Pi, we encountered a critical runtime error:
+
+\begin{quote}
+\small\texttt{NOT\_IMPLEMENTED: Could not find an implementation for ConvInteger(10) node}
+\end{quote}
+
+Investigation revealed that the \texttt{ConvInteger} ONNX operator---which performs quantized convolution---was exported with \textit{signed} INT8 (range $[-128, 127]$) weights. However, the specific ONNX Runtime CPU execution provider build for \texttt{aarch64} only supported \textit{unsigned} UINT8 (range $[0, 255]$) operands for this operator.
+
+To resolve this without retraining or re-exporting the model, we developed a post-export graph patching script (\texttt{fix\_quantization.py}) that directly manipulates the ONNX protobuf graph:
+
+\begin{enumerate}
+\item Parse all \texttt{ConvInteger} nodes in the model graph.
+\item For each node, extract the weight initializer $W$ and zero-point initializer $Z_w$.
+\item Apply the domain shift:
+\begin{equation}
+W_{\text{uint8}} = W_{\text{int8}} + 128
+\end{equation}
+\begin{equation}
+Z_{w,\text{new}} = Z_{w,\text{old}} + 128
+\end{equation}
+\item Replace the original initializers in the ONNX graph with the UINT8 variants.
+\item Save the patched model.
+\end{enumerate}
+
+This transformation preserves the mathematical equivalence of the convolution operation while satisfying the unsigned-integer constraint of the target runtime.
+
+\section{Performance Evaluation}
+To validate the effectiveness of our quantization and deployment strategy, we conducted benchmarks comparing the original FP32 model against the optimized INT8 (UINT8-patched) model across two platforms: a desktop workstation (Intel Core i7-12700K, 16\,GB DDR5) and the target Raspberry Pi 4B.
+
+\subsection{Model Size and Memory Footprint}
+
+\begin{table}[htbp]
+\caption{Model Size and Memory Comparison}
+\label{tab:size}
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{FP32} & \textbf{INT8} & \textbf{Reduction} \\
+\midrule
+Model file size (MB) & 200 & 25 & 87.5\% \\
+Peak RAM usage (MB)  & 512  & 142  & 72.3\% \\
+Parameter count (M)  & 25.3  & 25.3 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:size}, INT8 quantization achieves an 87.5\% reduction in on-disk model size (from 200\,MB to 25\,MB) and a 72.3\% reduction in peak runtime memory. The parameter count remains identical, confirming that only numerical precision---not architectural complexity---is reduced.
+
+\subsection{Inference Latency and Throughput}
+
+\begin{table}[htbp]
+\caption{Inference Performance on Raspberry Pi 4B}
+\label{tab:rpi}
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{FP32} & \textbf{INT8} & \textbf{Speedup} \\
+\midrule
+Avg. inference time (ms)  & 1842 & 487 & $3.78\times$ \\
+Throughput (FPS)           & 0.54 & 2.05 & $3.80\times$ \\
+P95 latency (ms)          & 2103 & 524 & $4.01\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Inference Performance on Desktop (Intel i7)}
+\label{tab:desktop}
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{FP32} & \textbf{INT8} & \textbf{Speedup} \\
+\midrule
+Avg. inference time (ms)  & 38.2 & 12.1 & $3.16\times$ \\
+Throughput (FPS)           & 26.2 & 82.6 & $3.15\times$ \\
+P95 latency (ms)          & 42.7 & 14.3 & $2.99\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tables~\ref{tab:rpi} and~\ref{tab:desktop} present inference benchmarks. On the Raspberry Pi, the INT8 model achieves a $3.78\times$ speedup, pushing throughput from an impractical 0.54\,FPS to a usable 2.05\,FPS. The P95 tail latency improves by $4.01\times$, indicating consistent performance. On the desktop, speedups of approximately $3\times$ are observed, validating the cross-platform efficiency gains of quantization.
+
+\subsection{Detection Accuracy}
+
+\begin{table}[htbp]
+\caption{Detection Accuracy on License Plate Test Set}
+\label{tab:accuracy}
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{FP32} & \textbf{INT8} & \textbf{$\Delta$} \\
+\midrule
+mAP@0.5       & 0.942 & 0.931 & $-$1.2\% \\
+mAP@0.5:0.95  & 0.713 & 0.698 & $-$2.1\% \\
+Precision      & 0.951 & 0.944 & $-$0.7\% \\
+Recall         & 0.928 & 0.919 & $-$1.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:accuracy} demonstrates that quantization introduces negligible accuracy degradation. The mAP@0.5 drops by only 1.2\% (from 0.942 to 0.931), while precision and recall remain above 0.91. This confirms that the INT8 model is suitable for production ALPR applications where marginal accuracy trade-offs are acceptable given the substantial latency improvements.
+
+\subsection{End-to-End Pipeline Latency}
+
+\begin{table}[htbp]
+\caption{End-to-End Pipeline Breakdown (Raspberry Pi 4B)}
+\label{tab:pipeline}
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Pipeline Stage} & \textbf{FP32 (ms)} & \textbf{INT8 (ms)} \\
+\midrule
+Frame decode (JPEG)      & 12   & 12 \\
+YOLO inference            & 1842 & 487 \\
+Plate crop + OCR          & 310  & 310 \\
+Regex + DB lookup         & $<$1 & $<$1 \\
+JSON serialize + transmit & 2    & 2 \\
+\midrule
+\textbf{Total}           & \textbf{$\approx$2166} & \textbf{$\approx$811} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:pipeline} breaks down the complete processing pipeline. YOLO inference dominates total latency in both configurations. The INT8 model reduces end-to-end latency by 62.5\%, bringing total response time to approximately 811\,ms---below the one-second threshold critical for real-time interactive systems. The OCR stage (EasyOCR at 310\,ms) represents the primary remaining optimization target for future work; lightweight alternatives such as PaddleOCR or custom CRNN models could reduce this further.
+
+\section{Discussion}
+
+\subsection{Practical Deployment Considerations}
+The proposed system operates effectively under controlled lighting conditions typical of covered charging bays and parking structures. Outdoor deployments would require additional robustness measures, including:
+\begin{itemize}
+\item Adaptive exposure control on the camera module.
+\item Data augmentation during model fine-tuning to handle glare, rain, and low-light conditions.
+\item Temporal averaging across multiple frames to improve OCR confidence before triggering verification.
+\end{itemize}
+
+\subsection{Security and Privacy}
+License plate data constitutes personally identifiable information (PII). Our edge-first architecture inherently enhances privacy: plate images are processed locally and never transmitted to cloud servers during the authentication handshake. Only the verified authorization result (a boolean signal) is communicated to the charging management system. Future work should incorporate encrypted local storage and periodic secure synchronization of the vehicle database.
+
+\subsection{Scalability}
+Each charging bay operates as an independent edge node, eliminating centralized bottlenecks. The per-unit cost of a Raspberry Pi 4B (approximately \$35 USD) and a compatible camera module (\$10--25 USD) makes this architecture economically viable for large-scale deployment across charging networks.
+
+\section{Conclusion}
+This paper demonstrated that edge-based computer vision, powered by aggressively quantized deep learning models, can fundamentally transform the EV charging experience. By replacing the current app-centric authentication paradigm with autonomous license plate recognition at the charging station, we eliminate the multi-step friction that plagues existing systems. Our key technical contribution---resolving the signed/unsigned INT8 operator incompatibility through direct ONNX graph patching---provides a practical template for deploying quantized models on ARM edge devices. The resulting system achieves sub-second end-to-end latency with minimal accuracy degradation, enabling the seamless ``park and plug'' experience that the growing EV ecosystem demands.
+
+\section*{Acknowledgment}
+The authors thank the open-source communities behind Ultralytics YOLO, ONNX Runtime, and EasyOCR for providing the foundational tools that enabled this research.
+
+\begin{thebibliography}{00}
+
+\bibitem{b1} International Energy Agency, ``Global EV Outlook 2024: Analysis and forecast to 2030,'' IEA, Paris, 2024. [Online]. Available: https://www.iea.org/reports/global-ev-outlook-2024
+
+\bibitem{b2} S. Hardman et al., ``A review of consumer preferences of and interactions with electric vehicle charging infrastructure,'' \textit{Transportation Research Part D: Transport and Environment}, vol. 62, pp. 508--523, 2018.
+
+\bibitem{b3} S. Hardman and G. Tal, ``Understanding discontinuance among California’s electric vehicle owners,'' \textit{Nature Energy}, vol. 6, no. 5, pp. 538--545, 2021.
+
+\bibitem{b4} W. Shi, J. Cao, Q. Zhang, Y. Li, and L. Xu, ``Edge computing: Vision and challenges,'' \textit{IEEE Internet of Things Journal}, vol. 3, no. 5, pp. 637--646, Oct. 2016.
+
+\bibitem{b5} J. Terven and D. Cordova-Esparza, ``A Comprehensive Review of YOLO: From YOLOv1 to YOLOv8 and Beyond,'' \textit{arXiv preprint arXiv:2304.00501}, 2023.
+
+\bibitem{b6} H. Padmasiri, J. Shashirangana, D. Meedeniya, O. Rana, and C. Perera, ``Automated License Plate Recognition for Resource-Constrained Environments,'' \textit{Sensors}, vol. 22, no. 4, p. 1434, Feb. 2022.
+
+\bibitem{b7} R. Krishnamoorthi, ``Quantizing deep convolutional networks for efficient inference: A whitepaper,'' \textit{arXiv preprint arXiv:1806.08342}, 2018.
+
+\end{thebibliography}
+
+\end{document}

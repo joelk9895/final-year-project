@@ -1,0 +1,119 @@
+\documentclass{beamer}
+
+% Theme
+\usetheme{Madrid}
+\usecolortheme{beaver}
+
+% Metadata
+\title{Semi-Autonomous EV Charging Station}
+\subtitle{License Plate Recognition and Access Control System (80\% Progress)}
+\author{Final Year Project Team}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Project Overview}
+    \begin{itemize}
+        \item \textbf{Objective}: Develop a seamless, semi-autonomous EV charging station authorization system.
+        \item \textbf{Method}: Automated License Plate Recognition (ALPR) via computer vision.
+        \item \textbf{Key Components}:
+        \begin{enumerate}
+            \item \textbf{iOS Client App}: Live camera feed and intelligent edge-streaming.
+            \item \textbf{Backend Server (Raspberry Pi)}: High-efficiency ALPR edge-node processing.
+            \item \textbf{Verification Logic}: Real-time regex matching and database lookup.
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Progress Snapshot (80\% Completed)}
+    \begin{itemize}
+        \item \textbf{Completed Phases}:
+        \begin{itemize}
+            \item YOLOv11 Model Quantization (INT8) for edge-deployment.
+            \item Python-based WebSocket Inference Server with EasyOCR.
+            \item Native iOS Application with AVFoundation and SwiftUI.
+            \item Full round-trip communication via WebSockets.
+            \item Real-time Bounding Box Overlay \& Verification Logic.
+        \end{itemize}
+        \item \textbf{Pending Phases (Remaining 20\%)}:
+        \begin{itemize}
+            \item Final physical integration with the EV charger relay/hardware.
+            \item Actual Cloud Database integration (replacing the Mock DB).
+            \item Payment/Gateway simulation.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{1. AI Model Optimization for the Edge}
+    \begin{itemize}
+        \item \textbf{Model}: Ultralytics YOLOv11.
+        \item \textbf{Challenge}: Heavy FP32 floating-point calculations are too slow for an ARM CPU.
+        \item \textbf{Solution}: Static Quantization using ONNX Runtime.
+        \begin{itemize}
+            \item Reduced model footprint by $\approx 75\%$.
+            \item Shifted INT8 operator weights to UINT8 via direct graph manipulation to ensure hardware compatibility with the target runtime.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{2. Backend Server Architecture}
+    \begin{itemize}
+        \item \textbf{Platform}: Raspberry Pi running a Python Asyncio WebSocket Server.
+        \item \textbf{Workflow}:
+        \begin{enumerate}
+            \item Receives JPEG-compressed frames from the iOS client.
+            \item Runs YOLOv11 ONNX inference natively.
+            \item Crops detected regions and passes them to \texttt{EasyOCR}.
+            \item Validates extracted text against standard license plate regexes (e.g., \texttt{MH12DE1433}).
+            \item Queries the local database for the vehicle owner and account balance.
+            \item Responds with precise JSON payloads (detections or final verification).
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3. Native iOS Client App}
+    \begin{itemize}
+        \item \textbf{Architecture}: Built entirely in Swift/SwiftUI with no third-party ML dependencies on the client-side.
+        \item \textbf{Features}:
+        \begin{itemize}
+            \item \textbf{Camera Manager}: Leverages \texttt{AVFoundation} to capture and compress high-resolution frames dynamically.
+            \item \textbf{Live Overlay}: Synthesizes server coordinate responses (bounding boxes + OCR text) over the live camera preview.
+            \item \textbf{Autonomous Halt}: Automatically detects a successful verification JSON payload, halts the camera session, and displays a clean ``Access Granted'' modal.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Demonstrating the Verification Workflow}
+    \begin{itemize}
+        \item \textbf{Step 1. Scan}: User points device camera at their vehicle's license plate.
+        \item \textbf{Step 2. Process}: 
+            \begin{itemize}
+                \item Server OCR reads: \texttt{MH12DE1433}.
+                \item Regex confirms standard plate format.
+                \item Database matched: Owner "Joel George", Balance "\$45.00".
+            \end{itemize}
+        \item \textbf{Step 3. Authorize}: Server sends \texttt{Verified} flag. iOS application locks the display, providing the green light to initiate charging.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusion \& Next Steps}
+    \begin{itemize}
+        \item \textbf{Current State}: The entire software stack (Vision $\to$ Logic $\to$ UI $\to$ Server) operates seamlessly with real-time latency.
+        \item \textbf{Next Goals}:
+        \begin{itemize}
+            \item Connect a GPIO relay on the Raspberry Pi to trigger a physical charging sequence when a verified payload arrives.
+            \item Migrate the Mock DB into a persistent backend (e.g., Firebase or PostgreSQL).
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \centering \Huge \textbf{Q\&A}
+\end{frame}
+
+\end{document}

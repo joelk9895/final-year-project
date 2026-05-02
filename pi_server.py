@@ -456,10 +456,36 @@ async def handle_api_users(request):
     users = [{"plate": r["plate"], "owner": r["owner"], "balance": f"${r['balance']:.2f}"} for r in rows]
     return web.Response(text=json.dumps(users), content_type='application/json')
 
+import urllib.request
+import urllib.error
+
+def report_ip_to_vercel(endpoint_url="https://your-vercel-project.vercel.app/api/report-ip"):
+    """Fetch the local IP and send it to a Vercel endpoint."""
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+        s.close()
+        
+        data = json.dumps({"ip": local_ip, "timestamp": time.time()}).encode('utf-8')
+        req = urllib.request.Request(endpoint_url, data=data, headers={'Content-Type': 'application/json'})
+        
+        try:
+            with urllib.request.urlopen(req, timeout=5) as response:
+                print(f"✅ Reported IP {local_ip} to Vercel (Status: {response.status})")
+        except urllib.error.URLError as e:
+            print(f"⚠️ Failed to report IP to Vercel: {e}")
+            
+    except Exception as e:
+        print(f"⚠️ Error finding/reporting local IP: {e}")
+
 # ─── Main ────────────────────────────────────────────
 
 async def main(model_path, port):
     global model, reader
+    
+    # Report IP to Vercel
+    report_ip_to_vercel()
     
     # Initialize SQLite database
     init_database()

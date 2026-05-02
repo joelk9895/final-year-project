@@ -8,7 +8,7 @@ Type=simple
 User=pi
 # Update these paths to match exactly where your project is stored on the Pi
 WorkingDirectory=/home/pi/final-year-project
-ExecStart=/usr/bin/python3 /home/pi/final-year-project/pi_server.py
+ExecStart=/home/pi/final-year-project/venv/bin/python3 /home/pi/final-year-project/pi_server.py
 Restart=always
 RestartSec=5
 

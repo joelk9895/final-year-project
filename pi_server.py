@@ -447,6 +447,15 @@ async def handle_feed_status(request):
         content_type='application/json'
     )
 
+async def handle_api_users(request):
+    """Return all active users from database as JSON."""
+    conn = _get_db()
+    c = conn.cursor()
+    c.execute("SELECT plate, owner, balance FROM vehicles WHERE status = 'active'")
+    rows = c.fetchall()
+    users = [{"plate": r["plate"], "owner": r["owner"], "balance": f"${r['balance']:.2f}"} for r in rows]
+    return web.Response(text=json.dumps(users), content_type='application/json')
+
 # ─── Main ────────────────────────────────────────────
 
 async def main(model_path, port):
@@ -483,6 +492,7 @@ async def main(model_path, port):
     app = web.Application()
     app.router.add_get('/feed', handle_feed)
     app.router.add_get('/status', handle_feed_status)
+    app.router.add_get('/api/users', handle_api_users)
     runner = web.AppRunner(app)
     await runner.setup()
     site = web.TCPSite(runner, "0.0.0.0", http_port)
